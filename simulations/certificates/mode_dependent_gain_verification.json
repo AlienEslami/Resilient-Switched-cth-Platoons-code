@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "reported_targets": {
+    "lambda_c_per_s": 0.25,
+    "mu_c": 1.0,
+    "xi_c_per_s": 0.125,
+    "alpha_0_per_s": 0.47,
+    "gamma_r": 1.244
+  },
+  "worst_residuals": {
+    "plant_lmi_max_eigenvalue": -0.02673286539077643,
+    "string_stability_lmi_max_eigenvalue": -0.012165369658359425,
+    "nominal_string_lmi_max_eigenvalue": 5.448444906799566e-10,
+    "residual_string_lmi_max_eigenvalue": -0.008354084235336255
+  },
+  "modes": [
+    {
+      "mode": 1,
+      "tau_s": 0.3,
+      "controller_gain": [
+        0.47,
+        0.99,
+        0.44
+      ],
+      "plant_spectral_abscissa": -0.5517090425335801,
+      "plant_lmi_max_eigenvalue": -0.02673286539077643,
+      "string_stability_lmi_max_eigenvalue": -0.4092596430761991,
+      "nominal_string_lmi_max_eigenvalue": 5.333780733046784e-10,
+      "residual_string_lmi_max_eigenvalue": -0.008354084235336255,
+      "residual_channel_max_eigenvalue": 117.9399010436148,
+      "frozen_mode_test": {
+        "q0": 0.494816,
+        "q1": 0.9476,
+        "quadratic_margin": -0.7198120000000001,
+        "nonamplifying": true
+      }
+    },
+    {
+      "mode": 2,
+      "tau_s": 0.5,
+      "controller_gain": [
+        0.5,
+        1.0,
+        0.5
+      ],
+      "plant_spectral_abscissa": -0.5256921960306555,
+      "plant_lmi_max_eigenvalue": -0.03967983680486192,
+      "string_stability_lmi_max_eigenvalue": -0.4662822119361406,
+      "nominal_string_lmi_max_eigenvalue": 5.299465544690095e-10,
+      "residual_string_lmi_max_eigenvalue": -0.08358455960768973,
+      "residual_channel_max_eigenvalue": 45.66724979460204,
+      "frozen_mode_test": {
+        "q0": 0.56,
+        "q1": 0.3999999999999999,
+        "quadratic_margin": 0.40000000000000013,
+        "nonamplifying": true
+      }
+    },
+    {
+      "mode": 3,
+      "tau_s": 0.7,
+      "controller_gain": [
+        0.53,
+        1.01,
+        0.7
+      ],
+      "plant_spectral_abscissa": -0.6062530880520091,
+      "plant_lmi_max_eigenvalue": -0.039125345744650014,
+      "string_stability_lmi_max_eigenvalue": -0.012165369658359425,
+      "nominal_string_lmi_max_eigenvalue": 5.448444906799566e-10,
+      "residual_string_lmi_max_eigenvalue": -0.07265297530858049,
+      "residual_channel_max_eigenvalue": 27.819742987119806,
+      "frozen_mode_test": {
+        "q0": 0.6292159999999999,
+        "q1": 0.09560000000000013,
+        "quadratic_margin": 1.2241239999999995,
+        "nonamplifying": true
+      }
+    }
+  ],
+  "tolerances": {
+    "strict_lmi": -1e-09,
+    "semidefinite_lmi": 1e-08
+  }
+}

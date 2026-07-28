@@ -1,0 +1,356 @@
+{
+  "noise": {
+    "state_packet_std": [
+      0.02,
+      0.01,
+      0.005
+    ],
+    "auxiliary_output_std": [
+      0.02,
+      0.01,
+      0.005
+    ],
+    "sample_period": 0.02,
+    "correlation_time": 0.05,
+    "seed": 20260717
+  },
+  "attacks": {
+    "low_frequency": {
+      "resilient": {
+        "duration_s": 160.0,
+        "minimum_intervehicle_distance_m": 25.883036401182025,
+        "maximum_tracking_error_norm": 10.24903086520401,
+        "maximum_tracking_error_norm_after_attack": 10.24903086520401,
+        "final_maximum_tracking_error_norm": 4.9985026129621275,
+        "final_maximum_state_attack_error_norm": 0.4477461170716904,
+        "final_maximum_auxiliary_attack_error_norm": 0.6899294199024201,
+        "tail_rms_state_attack_error_by_link": [
+          0.34463265064046583,
+          0.36379351424957135,
+          0.3906823823425495,
+          0.36705740511280116,
+          0.43903348965643707,
+          0.4214196272887065,
+          0.4521832358709618
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.5778581414635894,
+          0.6030811156461682,
+          0.6361622569218136,
+          0.6410354248665032,
+          0.7013197356042603,
+          0.7059436338290893,
+          0.7543660823178832
+        ],
+        "sampled_maximum_attack_rate": 2.2621762886127446,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.01999483569901629,
+          0.010058315509887037,
+          0.004966231897473251
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.020026106836359525,
+          0.009895926916560624,
+          0.0049824496402256675
+        ]
+      },
+      "uncompensated": {
+        "duration_s": 160.0,
+        "minimum_intervehicle_distance_m": 3.57171431356187,
+        "maximum_tracking_error_norm": 158.1816647179152,
+        "maximum_tracking_error_norm_after_attack": 158.1816647179152,
+        "final_maximum_tracking_error_norm": 140.18208412431724,
+        "final_maximum_state_attack_error_norm": 0.44774611706748046,
+        "final_maximum_auxiliary_attack_error_norm": 0.6899294199005446,
+        "tail_rms_state_attack_error_by_link": [
+          0.34463265064046583,
+          0.36379351424922585,
+          0.3906823823405525,
+          0.36705740511268614,
+          0.43903348965873445,
+          0.4214196272851744,
+          0.4521832358675067
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.5778581414635894,
+          0.6030811156462054,
+          0.6361622569206352,
+          0.6410354248662397,
+          0.7013197356044588,
+          0.7059436338282544,
+          0.754366082316737
+        ],
+        "sampled_maximum_attack_rate": 2.2621762886127446,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.01999483569901629,
+          0.010058315509887037,
+          0.004966231897473251
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.020026106836359525,
+          0.009895926916560624,
+          0.0049824496402256675
+        ]
+      },
+      "attack_angular_frequency_rad_s": 0.05,
+      "attack_frequency_hz": 0.007957747154594767,
+      "attack_period_s": 125.66370614359172
+    },
+    "ramp": {
+      "resilient": {
+        "duration_s": 50.0,
+        "minimum_intervehicle_distance_m": 25.883071731296702,
+        "maximum_tracking_error_norm": 3.3112214097343626,
+        "maximum_tracking_error_norm_after_attack": 3.3112214097343626,
+        "final_maximum_tracking_error_norm": 1.5558713823648738,
+        "final_maximum_state_attack_error_norm": 0.27475929222266765,
+        "final_maximum_auxiliary_attack_error_norm": 0.1802222067113746,
+        "tail_rms_state_attack_error_by_link": [
+          0.2118646195602781,
+          0.21730424910405097,
+          0.2303041606565513,
+          0.23036061460694196,
+          0.21516625212810353,
+          0.2328441060866822,
+          0.2287560117460682
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.18766876194058263,
+          0.20236668442504574,
+          0.2120462880991386,
+          0.22976562507485923,
+          0.2626783100483662,
+          0.2533380315767855,
+          0.2649143118278603
+        ],
+        "sampled_maximum_attack_rate": 6.179668372806339,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.020049224360122853,
+          0.01022232529519036,
+          0.0049953181563705314
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.01971106398245413,
+          0.010063711770364577,
+          0.00496139441090849
+        ]
+      },
+      "uncompensated": {
+        "duration_s": 50.0,
+        "minimum_intervehicle_distance_m": 13.271432221942177,
+        "maximum_tracking_error_norm": 105.44754075712184,
+        "maximum_tracking_error_norm_after_attack": 105.44754075712184,
+        "final_maximum_tracking_error_norm": 105.44754075712184,
+        "final_maximum_state_attack_error_norm": 0.2747592922232394,
+        "final_maximum_auxiliary_attack_error_norm": 0.18022220671114494,
+        "tail_rms_state_attack_error_by_link": [
+          0.2118646195602781,
+          0.21730424910442114,
+          0.2303041606560255,
+          0.23036061460634968,
+          0.21516625212853582,
+          0.23284410608673645,
+          0.22875601174625462
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.18766876194058263,
+          0.20236668442500275,
+          0.21204628809944803,
+          0.22976562507515513,
+          0.26267831004815184,
+          0.25333803157680634,
+          0.264914311827725
+        ],
+        "sampled_maximum_attack_rate": 6.179668372806339,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.020049224360122853,
+          0.01022232529519036,
+          0.0049953181563705314
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.01971106398245413,
+          0.010063711770364577,
+          0.00496139441090849
+        ]
+      }
+    }
+  },
+  "nominal": {
+    "duration_s": 35.0,
+    "minimum_intervehicle_distance_m": 25.883039576459943,
+    "maximum_tracking_error_norm": 2.1985844853609047,
+    "maximum_tracking_error_norm_after_attack": 0.17861560513950647,
+    "final_maximum_tracking_error_norm": 0.05849569312868557,
+    "final_maximum_state_attack_error_norm": 0.047167514704477845,
+    "final_maximum_auxiliary_attack_error_norm": 0.022760874930401027,
+    "tail_rms_state_attack_error_by_link": [
+      0.022170486813592745,
+      0.017425563304600097,
+      0.027349264545140004,
+      0.027552824326509358,
+      0.01888438734897696,
+      0.01783897340063224,
+      0.03121695222798941
+    ],
+    "tail_rms_auxiliary_attack_error_by_link": [
+      0.015128306162943993,
+      0.012984586046029157,
+      0.018955027693813534,
+      0.018576754393610943,
+      0.014153990981640252,
+      0.015166536093313513,
+      0.02015533234868552
+    ],
+    "sampled_maximum_attack_rate": 0.0,
+    "maximum_absolute_control": 2.4745722544420454,
+    "rms_state_packet_noise_by_component": [
+      0.019814857655848155,
+      0.010235129531571944,
+      0.004973973905764854
+    ],
+    "rms_auxiliary_output_noise_by_component": [
+      0.019878222522854948,
+      0.01016261716881926,
+      0.005007303899617442
+    ]
+  },
+  "single_link_low_frequency": {
+    "attacked_link": [
+      4,
+      3
+    ],
+    "propagation_quantity": "attack-induced acceleration obtained by subtracting the matched no-attack trajectory with identical noise",
+    "resilient": {
+      "scenario": {
+        "duration_s": 160.0,
+        "minimum_intervehicle_distance_m": 25.883036401182025,
+        "maximum_tracking_error_norm": 2.2507397053170846,
+        "maximum_tracking_error_norm_after_attack": 2.2507397053170846,
+        "final_maximum_tracking_error_norm": 0.7777557108135057,
+        "final_maximum_state_attack_error_norm": 0.3074268645353281,
+        "final_maximum_auxiliary_attack_error_norm": 0.572430909736339,
+        "tail_rms_state_attack_error_by_link": [
+          0.036575568247829454,
+          0.018225988323606036,
+          0.03231959427356981,
+          0.3670574051147328,
+          0.049245339542109745,
+          0.016097342320738353,
+          0.020901210221573065
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.025481205963987664,
+          0.013303055087289807,
+          0.022957681553038543,
+          0.6410354248669481,
+          0.02771399453763639,
+          0.01451342502632048,
+          0.017434188762225872
+        ],
+        "sampled_maximum_attack_rate": 2.0011559476189418,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.01999483569901629,
+          0.010058315509887037,
+          0.004966231897473251
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.020026106836359525,
+          0.009895926916560624,
+          0.0049824496402256675
+        ]
+      },
+      "downstream_propagation": {
+        "window_start_s": 30.0,
+        "vehicle_indices": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "incremental_rms_acceleration_m_s2": [
+          0.008606638190415173,
+          0.0038707403033373155,
+          0.002849076742951675,
+          0.0020622349211815894
+        ],
+        "normalized_incremental_rms_acceleration": [
+          1.0,
+          0.44973893612118904,
+          0.33103247515674167,
+          0.23960980763408968
+        ],
+        "maximum_adjacent_rms_ratio": 0.736054738804158,
+        "maximum_absolute_incremental_acceleration_m_s2": 0.03137686675824662
+      }
+    },
+    "uncompensated": {
+      "scenario": {
+        "duration_s": 160.0,
+        "minimum_intervehicle_distance_m": 6.067058308050946,
+        "maximum_tracking_error_norm": 22.931229309173673,
+        "maximum_tracking_error_norm_after_attack": 22.931229309173673,
+        "final_maximum_tracking_error_norm": 21.81421071317339,
+        "final_maximum_state_attack_error_norm": 0.30742686453642376,
+        "final_maximum_auxiliary_attack_error_norm": 0.572430909737488,
+        "tail_rms_state_attack_error_by_link": [
+          0.036575568247829454,
+          0.018225988323381806,
+          0.03231959427282678,
+          0.3670574051147489,
+          0.0492453395404796,
+          0.01609734232106393,
+          0.020901210222129776
+        ],
+        "tail_rms_auxiliary_attack_error_by_link": [
+          0.025481205963987664,
+          0.013303055087417175,
+          0.022957681553169965,
+          0.6410354248671997,
+          0.027713994536835953,
+          0.014513425026247357,
+          0.017434188762624217
+        ],
+        "sampled_maximum_attack_rate": 2.0011559476189418,
+        "maximum_absolute_control": 2.4745722544420454,
+        "rms_state_packet_noise_by_component": [
+          0.01999483569901629,
+          0.010058315509887037,
+          0.004966231897473251
+        ],
+        "rms_auxiliary_output_noise_by_component": [
+          0.020026106836359525,
+          0.009895926916560624,
+          0.0049824496402256675
+        ]
+      },
+      "downstream_propagation": {
+        "window_start_s": 30.0,
+        "vehicle_indices": [
+          4,
+          5,
+          6,
+          7
+        ],
+        "incremental_rms_acceleration_m_s2": [
+          0.04099652879473351,
+          0.040845182379167636,
+          0.04072454454352438,
+          0.04065175501884722
+        ],
+        "normalized_incremental_rms_acceleration": [
+          1.0,
+          0.9963083114591565,
+          0.9933656760900188,
+          0.9915901715090917
+        ],
+        "maximum_adjacent_rms_ratio": 0.9982126374771517,
+        "maximum_absolute_incremental_acceleration_m_s2": 0.057352178722315184
+      }
+    }
+  }
+}

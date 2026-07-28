@@ -1,0 +1,25 @@
+# Generated figures and simulation artifacts
+simulations/figures/
+comparison/figures/
+comparison/results/
+output/
+
+# Generated result files, except the committed baseline metrics
+simulations/results/*
+!simulations/results/baseline_scenario_metrics.json
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Notebooks and editors
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Local tooling
+tmp/
