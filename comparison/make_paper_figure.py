@@ -60,6 +60,7 @@ def main() -> None:
 
     fig.tight_layout(pad=0.25, h_pad=0.2)
     out = ROOT / "simulations" / "figures" / "comparison_all_links"
+    out.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(f"{out}.pdf")
     fig.savefig(f"{out}.png", dpi=150)
     separate = ROOT / "simulations" / "figures" / "separate"

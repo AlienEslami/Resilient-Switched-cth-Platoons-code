@@ -257,6 +257,7 @@ def main() -> None:
                   f"min gap={r['min_gap']:8.3f} m  [{verdict}]")
 
     out = ROOT / "comparison" / "results" / "single_channel.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(summary, indent=2))
     print(f"\nWrote {out}")
     _plots(series)
@@ -268,6 +269,7 @@ def _plots(series) -> None:
     import matplotlib.pyplot as plt
 
     figs = ROOT / "comparison" / "figures"
+    figs.mkdir(parents=True, exist_ok=True)
     # time series of max tracking error for the two headline scenarios
     for name in ("head_single", "all_links"):
         fig, ax = plt.subplots(figsize=(6, 4))
