@@ -1,0 +1,40 @@
+{
+  "omega_rad_s": 0.05,
+  "auxiliary_attack_vector_c": [
+    -4.0,
+    1.4,
+    0.8
+  ],
+  "link_scales": [
+    1.0,
+    1.05,
+    1.1,
+    1.15,
+    1.2,
+    1.25,
+    1.3
+  ],
+  "cosine_coefficient": 1.04650625,
+  "sine_coefficient": 0.002500000000000001,
+  "base_eventual_rate": 1.0229888806824832,
+  "eventual_rate_by_link": [
+    1.0229888806824832,
+    1.0741383247166074,
+    1.1252877687507317,
+    1.1764372127848555,
+    1.2275866568189797,
+    1.278736100853104,
+    1.3298855448872282
+  ],
+  "maximum_eventual_rate": 1.3298855448872282,
+  "c_e_s": 454.3386416167366,
+  "theorem1_eventual_reconstruction_bound": 604.2183919697968,
+  "observed_final_state_attack_estimation_error": 0.19506071785063786,
+  "theorem1_bound_to_observed_ratio": 3097.591348107617,
+  "theorem2_physical_radius_coefficient": 5750.723136455606,
+  "theorem2_Rbar_a_using_eventual_rates": 2014960.0252084758,
+  "theorem2_raw_stacked_state_norm_bound": 107645.14497179867,
+  "observed_final_max_tracking_error_norm": 3.762635475115395,
+  "theorem2_raw_bound_to_observed_ratio": 28608.975194041974,
+  "note": "The Theorem-2 quantity is the raw norm of the stacked deviation state X, which combines position, velocity, and acceleration coordinates; it is not labeled in metres."
+}

@@ -1,0 +1,106 @@
+{
+  "baseline": {
+    "citation": "M.-F. Lin et al., IEEE T-ITS, vol. 26, no. 12, 2025, DOI 10.1109/TITS.2025.3611976",
+    "specialization": "1-D specialization of Eq. (10); exact predecessor acceleration supplied and all six reported (k_px,k_v) gain pairs swept",
+    "selected_reported_gain": {
+      "vehicle": 5,
+      "k_px": 2.0,
+      "k_v": 10.0
+    },
+    "gain_sweep": [
+      {
+        "vehicle": 1,
+        "k_px": 2.0,
+        "k_v": 15.0,
+        "bounded_position_rmse_m": 0.21207697779694057
+      },
+      {
+        "vehicle": 2,
+        "k_px": 5.0,
+        "k_v": 40.0,
+        "bounded_position_rmse_m": 0.21270477237236418
+      },
+      {
+        "vehicle": 3,
+        "k_px": 3.0,
+        "k_v": 20.0,
+        "bounded_position_rmse_m": 0.212439083422478
+      },
+      {
+        "vehicle": 4,
+        "k_px": 3.0,
+        "k_v": 10.0,
+        "bounded_position_rmse_m": 0.21243432831608527
+      },
+      {
+        "vehicle": 5,
+        "k_px": 2.0,
+        "k_v": 10.0,
+        "bounded_position_rmse_m": 0.21207250217417115
+      },
+      {
+        "vehicle": 6,
+        "k_px": 2.0,
+        "k_v": 10.0,
+        "bounded_position_rmse_m": 0.21207250217417115
+      }
+    ],
+    "important_scope_note": "The unbounded-ramp case violates Lin et al.'s Assumption 1 that the injected false data and its derivative are bounded; it is an out-of-model capability stress test, not an in-assumption superiority claim."
+  },
+  "bounded": {
+    "proposed": {
+      "state_rmse_eval": 0.010084348900758454,
+      "state_max_eval": 0.02920809132341857,
+      "state_final_norm": 0.0061318897469868116,
+      "position_rmse_eval_m": 0.009352716061304393,
+      "velocity_rmse_eval_m_s": 0.00377104694068466,
+      "position_final_abs_m": 0.0030516601949432953,
+      "position_tail_rmse_m": 0.0047967801154943715,
+      "attack_rmse_eval": 0.010084348900758456,
+      "attack_final_norm": 0.006131889746986665,
+      "position_error_tail_slope": -0.0003296391429140201
+    },
+    "lin_1d": {
+      "state_rmse_eval": 0.2121531043467968,
+      "state_max_eval": 0.32103923726347183,
+      "state_final_norm": 0.26308845719928226,
+      "position_rmse_eval_m": 0.21205830766525902,
+      "velocity_rmse_eval_m_s": 0.006341437859759691,
+      "position_final_abs_m": 0.26290758070782694,
+      "position_tail_rmse_m": 0.20841702914334273,
+      "attack_rmse_eval": 0.2121531043467968,
+      "attack_final_norm": 0.26308845719928226,
+      "position_error_tail_slope": 0.006062632629313285
+    },
+    "attack_max_amplitude_over_horizon": 0.32559306505984936,
+    "attack_max_rate_over_horizon": 0.25019254879103714
+  },
+  "unbounded": {
+    "proposed": {
+      "state_rmse_eval": 0.5513465884731681,
+      "state_max_eval": 0.6142511507198702,
+      "state_final_norm": 0.515561349480322,
+      "position_rmse_eval_m": 0.5513464607624893,
+      "velocity_rmse_eval_m_s": 0.00037526747503384265,
+      "position_final_abs_m": 0.515561349480322,
+      "position_tail_rmse_m": 0.5510552652302166,
+      "attack_rmse_eval": 0.5513465884731683,
+      "attack_final_norm": 0.5155613494802367,
+      "position_error_tail_slope": 0.00021431916991787765
+    },
+    "lin_1d": {
+      "state_rmse_eval": 60.836091261679,
+      "state_max_eval": 100.00499987497032,
+      "state_final_norm": 100.00499987497032,
+      "position_rmse_eval_m": 60.82787190095784,
+      "velocity_rmse_eval_m_s": 0.9999999999999112,
+      "position_final_abs_m": 99.99999999996407,
+      "position_tail_rmse_m": 90.18503201750312,
+      "attack_rmse_eval": 60.836091261679,
+      "attack_final_norm": 100.00499987497032,
+      "position_error_tail_slope": 0.9999999999991842
+    },
+    "attack_max_amplitude_over_horizon": 100.00499987500625,
+    "attack_max_rate_over_horizon": 1.000000000010914
+  }
+}

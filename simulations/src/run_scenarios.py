@@ -25,14 +25,15 @@ SEPARATE_FIGURE_DIR = FIGURE_DIR / "separate"
 RESULT_DIR = ROOT / "simulations" / "results"
 
 COLORS = ["#1f77b4", "#d62728", "#2ca02c", "#9467bd", "#ff7f0e", "#17becf", "#4d4d4d"]
+LINE_STYLES = ["-", "--", "-.", ":", "-", "--", "-."]
+MARKERS = ["o", "s", "^", "D", "v", "P", "X"]
 STATE_LABELS = [r"position channel (m)", r"velocity channel (m/s)", r"acceleration channel (m/s$^2$)"]
 AUX_LABELS = [r"auxiliary channel 1", r"auxiliary channel 2", r"auxiliary channel 3"]
 
-# Display-only smoothing: a centered moving average over one auxiliary switching
-# cycle (0.8 s) suppresses the deterministic switching ripple of the estimate for
-# a clean plot. It is applied to the plotted estimate only; all reported metrics
-# are computed from the raw signals.
-DISPLAY_SMOOTH_S = 0.8
+# Publication figures use the raw observer trajectories.  Keeping this helper
+# at zero preserves a single plotting path while ensuring no display-only
+# filtering is applied.
+DISPLAY_SMOOTH_S = 0.0
 
 
 def _display_smooth(time: np.ndarray, y: np.ndarray, seconds: float = DISPLAY_SMOOTH_S) -> np.ndarray:
@@ -51,20 +52,41 @@ def configure_plotting() -> None:
     plt.rcParams.update(
         {
             "font.family": "serif",
-            "font.size": 7,
-            "axes.labelsize": 7,
-            "axes.titlesize": 7.5,
-            "legend.fontsize": 6.5,
-            "xtick.labelsize": 6.5,
-            "ytick.labelsize": 6.5,
-            "lines.linewidth": 1.1,
+            "font.serif": ["Times New Roman"],
+            "mathtext.fontset": "stix",
+            "font.size": 9,
+            "axes.labelsize": 9,
+            "axes.titlesize": 9.5,
+            "legend.fontsize": 8.5,
+            "xtick.labelsize": 8.5,
+            "ytick.labelsize": 8.5,
+            "lines.linewidth": 1.2,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
             "axes.grid": True,
             "grid.alpha": 0.25,
             "grid.linewidth": 0.5,
             "figure.dpi": 140,
             "savefig.dpi": 300,
+            "legend.handlelength": 2.4,
+            "legend.borderpad": 0.3,
+            "legend.labelspacing": 0.25,
         }
     )
+
+
+def vehicle_trajectory_style(index: int, sample_count: int) -> dict[str, object]:
+    """Return a color- and grayscale-distinguishable vehicle-trajectory style."""
+    marker_step = max(1, sample_count // 14)
+    return {
+        "color": COLORS[index % len(COLORS)],
+        "linestyle": LINE_STYLES[index % len(LINE_STYLES)],
+        "marker": MARKERS[index % len(MARKERS)],
+        "markevery": (index, marker_step),
+        "markersize": 3.0,
+        "markerfacecolor": "none",
+        "markeredgewidth": 0.7,
+    }
 
 
 def save_figure(
@@ -151,7 +173,7 @@ def nominal_figure(result: SimulationResult) -> None:
 
 def attack_figure(result: SimulationResult, scenario: str, link: int) -> None:
     if scenario == "ramp":
-        figure, axes = plt.subplots(3, 1, figsize=(3.35, 4.2), sharex=True)
+        figure, axes = plt.subplots(3, 1, figsize=(3.35, 4.6), sharex=True)
         compact_labels = [
             r"$x_s^a$ (m)",
             r"$x_v^a$ (m/s)",
@@ -167,10 +189,7 @@ def attack_figure(result: SimulationResult, scenario: str, link: int) -> None:
             )
             axis.plot(
                 result.time,
-                _display_smooth(
-                    result.time,
-                    result.estimated_x_attack[:, link, component],
-                ),
+                result.estimated_x_attack[:, link, component],
                 color="#d62728",
                 linestyle="--",
                 label="estimated",
@@ -187,14 +206,21 @@ def attack_figure(result: SimulationResult, scenario: str, link: int) -> None:
         )
         return
 
-    figure, axes = plt.subplots(6, 1, figsize=(3.35, 6.0), sharex=True)
+    figure, axes = plt.subplots(6, 1, figsize=(3.35, 7.0), sharex=True)
     for component in range(3):
         state_axis = axes[component]
         auxiliary_axis = axes[component + 3]
         state_axis.plot(result.time, result.x_attack[:, link, component], color="#111111", label="true")
         state_axis.plot(result.time, _display_smooth(result.time, result.estimated_x_attack[:, link, component]), color="#d62728", linestyle="--", label="estimated")
         auxiliary_axis.plot(result.time, result.y_attack[:, link, component], color="#111111", label="true")
-        auxiliary_axis.plot(result.time, _display_smooth(result.time, result.estimated_y_attack[:, link, component]), color="#1f77b4", linestyle="--", label="estimated")
+        auxiliary_axis.plot(
+            result.time,
+            _display_smooth(result.time, result.estimated_y_attack[:, link, component]),
+            color="#1f77b4",
+            linestyle="--",
+            linewidth=0.8 if component == 0 else 1.2,
+            label="estimated",
+        )
         state_axis.set_ylabel(
             [
                 r"$x_s^a$ (m)",
@@ -268,7 +294,7 @@ def platoon_comparison_figure(
     resilient: SimulationResult,
     scenario: str,
 ) -> None:
-    figure, axes = plt.subplots(4, 1, figsize=(3.35, 5.5), sharex=True)
+    figure, axes = plt.subplots(4, 1, figsize=(3.35, 6.2), sharex=True)
     cases = [
         ("Uncompensated controller", uncompensated),
         ("Proposed resilient controller", resilient),
@@ -280,19 +306,19 @@ def platoon_comparison_figure(
             result.physical[:, 1:, 1] - result.physical[:, [0], 1]
         )
         for follower in range(result.spacing_error.shape[1]):
-            color = COLORS[follower % len(COLORS)]
             label = rf"$i={follower + 1}$"
+            style = vehicle_trajectory_style(follower, result.time.size)
             spacing_axis.plot(
                 result.time,
                 result.spacing_error[:, follower],
-                color=color,
                 label=label,
+                **style,
             )
             velocity_axis.plot(
                 result.time,
                 velocity_error[:, follower],
-                color=color,
                 label=label,
+                **style,
             )
         spacing_axis.set_title(title)
         spacing_axis.set_ylabel(r"$\zeta_i$ (m)")
@@ -370,19 +396,20 @@ def single_link_propagation_figure(
             resilient_reference,
         ),
     ]
-    figure, axes = plt.subplots(2, 1, figsize=(3.35, 3.3), sharex=True)
+    figure, axes = plt.subplots(2, 1, figsize=(3.35, 3.8), sharex=True)
     for case_index, (title, result, reference) in enumerate(cases):
         acceleration_axis = axes[case_index]
         for vehicle in vehicle_indices:
-            color = COLORS[(vehicle - first_vehicle) % len(COLORS)]
+            style_index = vehicle - first_vehicle
+            style = vehicle_trajectory_style(style_index, result.time.size)
             acceleration_axis.plot(
                 result.time,
                 (
                     result.physical[:, vehicle, 2]
                     - reference.physical[:, vehicle, 2]
                 ),
-                color=color,
                 label=rf"$i={vehicle}$",
+                **style,
             )
         acceleration_axis.set_title(title)
         acceleration_axis.set_ylabel(r"$\Delta a_i$ (m/s$^2$)")
@@ -435,7 +462,7 @@ def scenario_metrics(result: SimulationResult, attack_start: float = 8.0) -> dic
 
 def run_all(step: float) -> dict[str, object]:
     definitions = {
-        "low_frequency": ("low_frequency", 160.0, 3),
+        "low_frequency": ("low_frequency", 300.0, 3),
         "ramp": ("ramp", 50.0, 3),
     }
     config = json.loads(
@@ -497,7 +524,7 @@ def run_all(step: float) -> dict[str, object]:
 
     attacked_link = 3
     single_link_options = dict(
-        duration=160.0,
+        duration=300.0,
         step=step,
         sample_step=0.02,
         attack="low_frequency",

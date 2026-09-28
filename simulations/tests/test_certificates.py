@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 import numpy as np
-from scipy.linalg import eigvalsh
+from scipy.linalg import eigvalsh, expm
 
 from simulations.src.certificates import periodic_gramian
 
@@ -43,6 +43,20 @@ def test_observer_lifted_contraction() -> None:
         np.linalg.eigvalsh(gramian).min()
         >= observer["observability_beta_report"]
     )
+
+    # Recheck the single common P_o over all nine admissible dwell tuples.
+    a_error = [np.asarray(item) for item in observer["A_error"]]
+    worst = 0.0
+    for dwell_1 in config["auxiliary"]["admissible_dwell_times"]:
+        for dwell_2 in config["auxiliary"]["admissible_dwell_times"]:
+            family_psi = expm(a_error[1] * dwell_2) @ expm(a_error[0] * dwell_1)
+            contraction = np.sqrt(
+                eigvalsh(family_psi.T @ p_o @ family_psi, p_o).max()
+            )
+            worst = max(worst, float(contraction))
+            residual = family_psi.T @ p_o @ family_psi - q**2 * p_o
+            assert np.linalg.eigvalsh(residual).max() < 0.0
+    assert np.isclose(worst, observer["worst_generalized_contraction"], atol=1.0e-9)
 
 
 def test_common_platoon_certificate() -> None:

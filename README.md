@@ -5,7 +5,7 @@ constant-time-headway (CTH) vehicle platoon with:
 
 - switched, mode-dependent powertrain dynamics;
 - false-data-injection attacks on V2V state and auxiliary-output channels;
-- a private switching-observable auxiliary system;
+- a defender-designed switching-observable auxiliary system;
 - amplitude-independent attack-estimation bounds based on attack rates;
 - nominal acceleration string stability and bounded-power residual analysis.
 
@@ -25,6 +25,9 @@ only. The manuscript is maintained separately.
 - **simulations/tools/** — solver check and independent certificate verifiers.
 - **comparison/** — head-to-head comparison against a redundancy-based (MSR)
   resilient controller.
+- **verification/** — the nine-tuple observer certificate, tightened
+  partial-cycle bound, nontrivial ADT stress certificate, exact
+  low-frequency rate calculation, and recent-observer comparison.
 
 Generated figures are not tracked; the scripts regenerate them into
 `simulations/figures/` and `comparison/figures/`.
@@ -75,9 +78,20 @@ Run the headway sweep:
 Run the MSR comparison:
 
     .\.venv\Scripts\python.exe comparison\compare.py
+    .\.venv\Scripts\python.exe comparison\make_paper_figure.py
+
+Verify the auxiliary dwell family and tightened observer constants:
+
+    .\.venv\Scripts\python.exe verification\tight_observer_bound.py
+    .\.venv\Scripts\python.exe verification\low_frequency_tail_bound.py
+
+Run the comparison with the 1-D specialization of the recent observer:
+
+    .\.venv\Scripts\python.exe verification\recent_observer_comparison.py
 
 ## Reproducibility policy
 
-Every reported figure and table is generated from the committed configuration
-files and scripts. The model, noise realization, and parameters are fixed in
-version control so the numerical results are auditable.
+Every reported numerical result and figure is generated from the committed
+configuration files and scripts. Generated figure files are not tracked, but
+the model, noise realization, parameters, stored metrics, and certificate
+matrices are fixed in version control so the results are auditable.

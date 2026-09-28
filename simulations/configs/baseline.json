@@ -11,6 +11,7 @@
     "topology": "single_predecessor"
   },
   "auxiliary": {
+    "admissible_dwell_times": [0.30, 0.35, 0.40],
     "dwell_times": [0.4, 0.4],
     "observability_horizon": 1.6,
     "A_z": [
@@ -58,8 +59,9 @@
     "seed": 20260717
   },
   "certificate_targets": {
-    "observer_q_design": 0.8,
-    "observer_q_report": 0.81,
+    "observer_q_design": 0.85,
+    "observer_q_report": 0.85,
+    "observer_partial_cycle_bound": 3.31,
     "plant_lambda_c": 0.25,
     "string_alpha_0": 0.47,
     "string_gamma_r": 1.244

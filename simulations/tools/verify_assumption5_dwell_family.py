@@ -1,17 +1,20 @@
-"""Verify Assumption 5 over the admissible auxiliary-mode dwell family.
+"""Verify the publication's Assumption 5 dwell-family certificate.
 
-The script searches for a common ``P_o`` and the minimum contraction factor
-``q`` by bisection using CLARABEL. The reported result is the worst case over
-all admissible dwell tuples.
+The script loads the reported, deliberately well-conditioned common ``P_o``
+and independently rechecks all nine admissible dwell tuples.  The paper does
+not claim that its reported ``q=0.85`` minimizes contraction; the certificate
+balances contraction and conditioning to tighten the continuous-time bound.
 
 Run from the repository root with::
 
     python simulations/tools/verify_assumption5_dwell_family.py
 """
 
-import cvxpy as cp
+import json
+from pathlib import Path
+
 import numpy as np
-from scipy.linalg import expm
+from scipy.linalg import eigvalsh, expm
 
 
 def blk(Az, Bz):
@@ -53,36 +56,28 @@ print(
     f"min={min(rhos):.4f} max={max(rhos):.4f}",
     flush=True,
 )
-n = 9
-
-
-def feas(q2):
-    Po = cp.Variable((n, n), symmetric=True)
-    cons = [Po >> np.eye(n)] + [
-        Psi.T @ Po @ Psi << q2 * Po for Psi in Psis
-    ]
-    problem = cp.Problem(cp.Minimize(0), cons)
-    problem.solve(solver=cp.CLARABEL, verbose=False)
-    return Po.value if problem.status.startswith("optimal") else None
-
-
-lo, hi, Pb = max(rhos) ** 2, 0.999, None
-for _ in range(16):
-    midpoint = 0.5 * (lo + hi)
-    P = feas(midpoint)
-    if P is not None:
-        hi, Pb = midpoint, P
-    else:
-        lo = midpoint
-
-worst = max(
-    max(np.linalg.eigvals(np.linalg.solve(Pb, Psi.T @ Pb @ Psi)).real)
-    for Psi in Psis
+root = Path(__file__).resolve().parents[2]
+certificate = json.loads(
+    (root / "verification" / "observer_dwell_family_certificate.json").read_text(
+        encoding="utf-8"
+    )
 )
-q = np.sqrt(worst)
-lam = -np.log(q) / Trho
+Po = np.asarray(certificate["P_o"], dtype=float)
+q_report = float(certificate["q_report"])
+contractions = [
+    np.sqrt(float(eigvalsh(Psi.T @ Po @ Psi, Po).max())) for Psi in Psis
+]
+margins = [
+    float(np.linalg.eigvalsh(Psi.T @ Po @ Psi - q_report**2 * Po).max())
+    for Psi in Psis
+]
+q = max(contractions)
+lam = -np.log(q_report) / Trho
+assert q < q_report
+assert max(margins) < 0.0
 print(
-    f"COMMON-Po: q_worst={q:.4f}  lambda_e={lam:.4f}  "
-    f"cond(Po)={np.linalg.cond(Pb):.2f}",
+    f"PUBLICATION-Po: q_worst={q:.4f}  q_report={q_report:.2f}  "
+    f"lambda_e={lam:.4f}  cond(Po)={np.linalg.cond(Po):.2f}  "
+    f"worst_lmi_margin={max(margins):.3e}",
     flush=True,
 )

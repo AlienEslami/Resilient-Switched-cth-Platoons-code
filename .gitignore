@@ -2,6 +2,7 @@
 simulations/figures/
 comparison/figures/
 comparison/results/
+verification/*.pdf
 output/
 
 # Generated result files, except the committed baseline metrics

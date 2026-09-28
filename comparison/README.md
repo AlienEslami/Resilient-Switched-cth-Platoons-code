@@ -22,6 +22,16 @@ neighbour packets are processed:
 MSR is given the redundant look-ahead graph it is designed for (in-degrees
 1,2,3,3,3,3,3 for followers 1..7 with `WINDOW=3`, `F=1`).
 
+Every attacked physical-state packet receives the kinematically consistent
+signal `[q_a, q_a_dot, q_a_ddot]`.  Its false velocity changes smoothly from
+zero to `-0.5 m/s` over 4 s using a quintic smoothstep; false position is its
+integral and false acceleration is its derivative.  The onset therefore has no
+step in any state component.  The negative drift makes a predecessor appear to
+move more slowly and fall behind, inducing the uncompensated controller to
+increase the actual gap and disperse the platoon.  The auxiliary-output attack
+is zero in this comparison because the MSR baseline has no corresponding
+channel.
+
 ## Scenarios (`compare.py`)
 
 | Scenario | Attacked links | Point |

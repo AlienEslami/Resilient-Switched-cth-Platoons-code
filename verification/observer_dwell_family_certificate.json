@@ -1,0 +1,198 @@
+{
+  "description": "Independent common-quadratic verification of Assumption 5 over all 3x3=9 auxiliary dwell tuples.",
+  "dwell_alphabet_s": [
+    0.3,
+    0.35,
+    0.4
+  ],
+  "q_report": 0.85,
+  "worst_generalized_contraction": 0.8400253432272144,
+  "worst_tuple_s": [
+    0.4,
+    0.3
+  ],
+  "lambda_e_per_s": 0.20314866187221867,
+  "condition_number_P_o": 37.04682639781261,
+  "M_e": 92.29828708128156,
+  "D_2_norm": 1.0,
+  "c_e_s": 454.3386416167366,
+  "P_o": [
+    [
+      4.149301259575572,
+      0.0,
+      0.0,
+      -0.5375420717450949,
+      0.0,
+      0.0,
+      1.585618782745416,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      5.930168067619412,
+      0.0,
+      0.0,
+      2.307004416915154,
+      0.0,
+      0.0,
+      4.734498550920066,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      13.947014674603887,
+      0.0,
+      0.0,
+      9.16539268718507,
+      0.0,
+      0.0,
+      1.4762254808054531
+    ],
+    [
+      -0.5375420717450949,
+      0.0,
+      0.0,
+      4.287405683838175,
+      0.0,
+      0.0,
+      -1.3433723119171537,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      2.307004416915154,
+      0.0,
+      0.0,
+      2.470247177392188,
+      0.0,
+      0.0,
+      1.6378758360422607,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      9.16539268718507,
+      0.0,
+      0.0,
+      18.59615996984498,
+      0.0,
+      0.0,
+      -14.703900264043412
+    ],
+    [
+      1.585618782745416,
+      0.0,
+      0.0,
+      -1.3433723119171537,
+      0.0,
+      0.0,
+      2.1584293517345916,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      4.734498550920066,
+      0.0,
+      0.0,
+      1.6378758360422607,
+      0.0,
+      0.0,
+      6.4003718156972464,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.4762254808054531,
+      0.0,
+      0.0,
+      -14.703900264043412,
+      0.0,
+      0.0,
+      23.497530448339656
+    ]
+  ],
+  "tuples": [
+    {
+      "dwell_mode_1_s": 0.3,
+      "dwell_mode_2_s": 0.3,
+      "spectral_radius": 0.6617808635393968,
+      "generalized_contraction": 0.8400253430315167,
+      "lmi_max_eigenvalue_at_q_0p85": -0.021137300699399484
+    },
+    {
+      "dwell_mode_1_s": 0.3,
+      "dwell_mode_2_s": 0.35,
+      "spectral_radius": 0.7648966168730852,
+      "generalized_contraction": 0.8393377211094685,
+      "lmi_max_eigenvalue_at_q_0p85": -0.02341395573058863
+    },
+    {
+      "dwell_mode_1_s": 0.3,
+      "dwell_mode_2_s": 0.4,
+      "spectral_radius": 0.7881864572701092,
+      "generalized_contraction": 0.8400062544747225,
+      "lmi_max_eigenvalue_at_q_0p85": -0.021204641455610317
+    },
+    {
+      "dwell_mode_1_s": 0.35,
+      "dwell_mode_2_s": 0.3,
+      "spectral_radius": 0.7356112551075179,
+      "generalized_contraction": 0.8289255112934828,
+      "lmi_max_eigenvalue_at_q_0p85": -0.060342827014179194
+    },
+    {
+      "dwell_mode_1_s": 0.35,
+      "dwell_mode_2_s": 0.35,
+      "spectral_radius": 0.6027469013045892,
+      "generalized_contraction": 0.820665948955974,
+      "lmi_max_eigenvalue_at_q_0p85": -0.07226163750591744
+    },
+    {
+      "dwell_mode_1_s": 0.35,
+      "dwell_mode_2_s": 0.4,
+      "spectral_radius": 0.7222968361433255,
+      "generalized_contraction": 0.8186809356404221,
+      "lmi_max_eigenvalue_at_q_0p85": -0.07147875551010022
+    },
+    {
+      "dwell_mode_1_s": 0.4,
+      "dwell_mode_2_s": 0.3,
+      "spectral_radius": 0.7733621133365896,
+      "generalized_contraction": 0.8400253432272144,
+      "lmi_max_eigenvalue_at_q_0p85": -0.03431837201411934
+    },
+    {
+      "dwell_mode_1_s": 0.4,
+      "dwell_mode_2_s": 0.35,
+      "spectral_radius": 0.7041202415418624,
+      "generalized_contraction": 0.8222434575703251,
+      "lmi_max_eigenvalue_at_q_0p85": -0.08781011826010544
+    },
+    {
+      "dwell_mode_1_s": 0.4,
+      "dwell_mode_2_s": 0.4,
+      "spectral_radius": 0.5328330567762009,
+      "generalized_contraction": 0.8134385745839956,
+      "lmi_max_eigenvalue_at_q_0p85": -0.1176459617630991
+    }
+  ],
+  "cycle_gramian_min_eigenvalue": 0.0006610773347916277,
+  "K_e_log_norm_bound_original": 8.402600746106577,
+  "K_e_grid_max": 3.2919133297427052,
+  "K_e_grid_spacing_s": 0.0008,
+  "K_e_lipschitz_enclosure_upper": 3.3072307759331623,
+  "K_e_report": 3.31,
+  "low_frequency_bound_illustration": {
+    "sampled_maximum_attack_rate": 2.2621762886127446,
+    "c_e_times_sampled_rate": 1027.794102065905,
+    "final_maximum_state_attack_error_norm": 0.19506071785063786,
+    "bound_to_final_error_ratio": 5269.098326875373,
+    "note": "The sampled rate is from the public simulation metrics; this comparison illustrates conservatism and is not a collision-avoidance certificate."
+  }
+}

@@ -148,14 +148,15 @@ def synthesize_observer(config: dict[str, Any]) -> dict[str, Any]:
 
     q_design = float(config["certificate_targets"]["observer_q_design"])
     q_report = float(config["certificate_targets"]["observer_q_report"])
-    p_o = cp.Variable((9, 9), symmetric=True)
-    observer_constraints = [
-        p_o >> np.eye(9),
-        psi.T @ p_o @ psi << q_design**2 * p_o,
-    ]
-    observer_problem = cp.Problem(cp.Minimize(cp.trace(p_o)), observer_constraints)
-    solve(observer_problem)
-    p_value = sym(p_o.value)
+
+    # The paper certifies the complete 3x3 dwell family with one common P_o.
+    # The stored matrix is independently rechecked by
+    # verification/tight_observer_bound.py and by the regression tests below.
+    family_path = ROOT / "verification" / "observer_dwell_family_certificate.json"
+    family = json.loads(family_path.read_text(encoding="utf-8"))
+    p_value = sym(np.asarray(family["P_o"], dtype=float))
+    if not math.isclose(float(family["q_report"]), q_report):
+        raise ValueError("Observer q in baseline.json and the dwell-family certificate differ")
 
     q_actual = math.sqrt(
         float(eigvalsh(psi.T @ p_value @ psi, p_value).max())
@@ -166,22 +167,22 @@ def synthesize_observer(config: dict[str, Any]) -> dict[str, Any]:
         ).max()
     )
 
-    # A rigorous partial-cycle bound from the Euclidean logarithmic norm.
+    # Retain the logarithmic norms as diagnostics, but use the tighter direct
+    # transition enclosure reported in the paper for the partial-cycle bound.
     log_norms = [
         float(np.linalg.eigvalsh(sym(a_mode)).max())
         for a_mode in a_error
     ]
-    k_e = math.exp(
-        sum(max(0.0, value) * duration for value, duration in zip(log_norms, dwell))
-    )
-    lambda_e = -math.log(q_report) / period
-    p_condition = float(np.linalg.cond(p_value))
-    m_e = (
-        k_e**2
-        * math.sqrt(p_condition)
-        * q_report ** (-2.0)
-    )
-    c_e = m_e / lambda_e  # ||D||_2 = 1 for the augmented model.
+    k_e = float(family["K_e_report"])
+    lambda_e = float(family["lambda_e_per_s"])
+    p_condition = float(family["condition_number_P_o"])
+    m_e = float(family["M_e"])
+    c_e = float(family["c_e_s"])
+
+    family_margins = [
+        float(item["lmi_max_eigenvalue_at_q_0p85"])
+        for item in family["tuples"]
+    ]
 
     return {
         "A_aug": [as_list(item) for item in a_aug],
@@ -196,12 +197,19 @@ def synthesize_observer(config: dict[str, Any]) -> dict[str, Any]:
         "q_actual": q_actual,
         "q_report": q_report,
         "lifted_margin_max_eigenvalue": lifted_margin,
+        "admissible_dwell_times": family["dwell_alphabet_s"],
+        "worst_generalized_contraction": family["worst_generalized_contraction"],
+        "worst_dwell_tuple": family["worst_tuple_s"],
+        "family_lmi_max_eigenvalues_at_reported_q": family_margins,
+        "family_observability_gramian_min_eigenvalue": family["cycle_gramian_min_eigenvalue"],
         "observability_horizon": horizon,
         "observability_beta_min": beta_min,
         "observability_beta_report": beta_report,
         "worst_phase": float((center + phase_result.x) % period),
         "logarithmic_norms": log_norms,
         "K_e": k_e,
+        "K_e_grid_max": family["K_e_grid_max"],
+        "K_e_lipschitz_enclosure_upper": family["K_e_lipschitz_enclosure_upper"],
         "lambda_e": lambda_e,
         "P_o_condition_number": p_condition,
         "M_e": m_e,
@@ -540,13 +548,18 @@ def markdown_summary(
         "",
         "## Switching observer",
         "",
+        f"- Admissible dwell times: {observer['admissible_dwell_times']} s",
+        f"- Worst generalized contraction: {observer['worst_generalized_contraction']:.8f}",
+        f"- Worst dwell tuple: {observer['worst_dwell_tuple']} s",
+        f"- Family LMI worst max eigenvalue: {max(observer['family_lmi_max_eigenvalues_at_reported_q']):.8e}",
+        f"- Family observability-Gramian minimum eigenvalue: {observer['family_observability_gramian_min_eigenvalue']:.8e}",
         f"- Observability beta (computed): {observer['observability_beta_min']:.8e}",
         f"- Observability beta (reported): {observer['observability_beta_report']:.8e}",
         f"- Monodromy spectral radius: {observer['spectral_radius_monodromy']:.8f}",
         f"- Lifted q (reported): {observer['q_report']:.4f}",
         f"- Lifted LMI max eigenvalue: {observer['lifted_margin_max_eigenvalue']:.8e}",
         f"- lambda_e: {observer['lambda_e']:.8f} 1/s",
-        f"- K_e (log-norm bound): {observer['K_e']:.8f}",
+        f"- K_e (direct-transition upper bound): {observer['K_e']:.8f}",
         f"- M_e: {observer['M_e']:.8f}",
         f"- c_e: {observer['c_e']:.8f} s",
         "",

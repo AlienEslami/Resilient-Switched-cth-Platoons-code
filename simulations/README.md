@@ -43,6 +43,11 @@ admissible auxiliary-mode dwell tuples with:
 
     .\.venv\Scripts\python.exe simulations\tools\verify_assumption5_dwell_family.py
 
+The stored publication certificate and the tightened direct-transition
+partial-cycle bound are independently rechecked with:
+
+    .\.venv\Scripts\python.exe verification\tight_observer_bound.py
+
 The deterministic trajectory regression suite is run with:
 
     .\.venv\Scripts\python.exe -m pytest simulations\tests -q
@@ -51,6 +56,10 @@ Generate the paper's nominal baseline and the low-frequency and ramp-attack
 studies with:
 
     .\.venv\Scripts\python.exe -m simulations.src.run_scenarios
+
+The low-frequency all-link and single-link studies run for 300 s; the ramp
+study runs for 50 s. Publication figures use the raw observer trajectories
+without display-only smoothing.
 
 Every paper scenario uses the reproducible low-power communication-noise model
 reported in **configs/baseline.json**. Each attack is run with both the

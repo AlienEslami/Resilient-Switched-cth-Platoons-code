@@ -1,0 +1,84 @@
+Numerical verification included with this revision
+
+1) observer_dwell_family_certificate.json / tight_observer_bound.py
+   - Checks all nine auxiliary dwell tuples from {0.30,0.35,0.40}^2.
+   - A single positive-definite P_o certifies the whole family.
+   - Worst generalized contraction = 0.8400253432 < reported q = 0.85.
+   - lambda_e = 0.2031486619 1/s.
+   - The earlier logarithmic-norm partial-cycle bound K_e=8.4026 was
+     replaced by a direct transition calculation plus a grid-Lipschitz
+     enclosure.  Grid max = 3.2919133297, enclosure = 3.3072307759,
+     and the paper safely reports K_e <= 3.31.
+   - cond_2(P_o) = 37.0468263978, M_e = 92.2982870813,
+     c_e = 454.3386416167 s.
+   - Minimum complete-cycle observability-Gramian eigenvalue over all
+     nine tuples = 6.6107733479e-4 > 0.
+   - For the simulated low-frequency attack, the activation transient is finite
+     and therefore does not enter the limsup bound (24).  The exact eventual
+     rate is computed analytically in low_frequency_tail_bound.py:
+     max_i dbar_i,infinity = 1.3298855449.  Hence c_e*dbar_infinity = 604.2184
+     versus final maximum state-attack estimation error 0.1950607, a factor
+     about 3.10e3.
+   - Using the same eventual per-link rates in Theorem 2 gives a conservative
+     raw stacked-state certificate for the regenerated physical constants,
+     versus observed final max_i ||e_i|| = 3.7626.  This is a raw mixed-state
+     norm (position/velocity/acceleration coordinates), so it is not labeled in
+     metres.  The paper therefore states only that (36), which carries c_e^2,
+     is even less informative for collision-avoidance certification.
+
+   Conditioning tradeoff check:
+   - Relaxing the reported contraction target to q=0.90 was investigated
+     for the fixed observer gains. A direct search found cond_2(P_o) about
+     22.9, but the q^{-2}/(-ln q) factor increases enough that c_e rises to
+     about 4.9e2 s with K_e=3.31. Therefore the q=0.85 certificate was
+     retained; minimizing conditioning alone is not the right objective for
+     c_e in this design.
+
+2) adt_stress_certificate.json
+   - Two-follower stress set used only for Theorem 2.
+   - Both frozen closed loops are Hurwitz.
+   - Mode-dependent certificates give lambda_c = 0.1206282202 1/s,
+     mu_c = 2.6015173123 and ADT threshold = 15.8519267743 s.
+   - 0.5-s alternating dwell has monodromy spectral radius 1.1181669436 > 1,
+     disproving arbitrary-switching stability/common-quadratic stability for
+     this stress set.
+   - 20-s dwell satisfies the ADT certificate.
+   - The stress parameters are constructed for the certificate stress test
+     and are not asserted to represent production powertrains.
+
+The paper reports rounded versions of these values. These verification files
+are included in the public simulation repository so the numerical claims are
+self-contained and independently checkable.
+
+3) low_frequency_tail_bound.py / low_frequency_tail_bound.json
+   - Derives the post-activation attack-rate norm in closed form rather than
+     from time samples.  With omega=0.05 rad/s and c=[-4,1.4,0.8]^T,
+     ||nu_i||^2 = ell_i^2[1.04650625 cos^2(theta)+0.0025 sin^2(theta)],
+     so max_i limsup ||nu_i|| = 1.3298855449.
+   - Recomputes the Theorem-1 and Theorem-2 deterministic bounds using these
+     eventual rates.
+
+4) recent_observer_comparison.py / recent_observer_comparison_metrics.json
+   - Reproduces the recent-observer benchmark added to Section V.
+   - Baseline: 1-D specialization of Eq. (10) in M.-F. Lin et al., IEEE
+     T-ITS 26(12), 2025, DOI 10.1109/TITS.2025.3611976. Their Remark 3 states
+     that the observer reduces to a Luenberger structure in 1-D.
+   - To favor the baseline, exact predecessor acceleration is supplied and all
+     six reported (k_px,k_v) gain pairs are swept; the best bounded-case pair
+     is used for the reported comparison.
+   - Bounded multiplicative FDI: position reconstruction RMSE is 0.00935 m
+     (proposed) versus 0.212 m (Lin 1-D specialization).
+   - Bounded-rate unbounded FDI: x_s^a(t)=t m with ||dot x^a||=1. At 100 s,
+     position reconstruction error is 0.516 m (proposed) versus 100 m (Lin
+     specialization); the latter grows with slope approximately 1 m/s.
+   - Scope caveat: the unbounded case violates Lin et al.'s Assumption 1 that
+     the injected false data and its derivative are bounded. It is explicitly
+     presented as an out-of-model capability-boundary stress test, not a
+     within-assumption superiority claim.
+   - Guo et al. (Journal of Control and Decision, 13(2), 2026) is not used as
+     a direct numerical baseline because it estimates input-channel attacks,
+     not communication state-packet corruption. Its intermediate-variable
+     design also does not require bounded attack amplitude; its theorem instead
+     uses a finite-horizon derivative-energy condition.
+   - recent_observer_comparison.pdf is generated by the script and is used as
+     the corresponding publication figure in the manuscript.

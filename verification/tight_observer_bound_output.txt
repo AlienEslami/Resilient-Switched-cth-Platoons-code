@@ -1,0 +1,9 @@
+worst generalized contraction: 0.840025343227 at (0.4, 0.3)
+grid maximum ||Phi||_2:       3.291913329743 at u,v=(0.0, 0.4)
+grid spacing:                 0.0008000 s
+Lipschitz enclosure upper:    3.307230775933
+reported K_e upper bound:     3.31
+cond_2(P_o):                  37.04682640
+lambda_e:                     0.2031486619 1/s
+M_e:                          92.29828708
+c_e:                          454.33864162 s

@@ -46,10 +46,10 @@ DURATION = 40.0
 STEP = 0.005
 SAMPLE = 0.02
 ATTACK_START = 8.0
-ATTACK_RISE = 2.0
-# constant biases injected on an attacked link (state packet / auxiliary output)
-X_BIAS = np.array([15.0, 2.0, 0.6])
-Y_BIAS = np.array([-6.0, 1.5, 0.8])
+ATTACK_RISE = 4.0
+# A negative drift reports each predecessor as moving more slowly and falling
+# behind.  This encourages platoon dispersion rather than a spacing collapse.
+ATTACK_DRIFT_RATE = -0.5  # m/s after the smooth onset
 # followers with the full redundancy WINDOW (used for the headline metric)
 FULL_REDUNDANCY_FOLLOWERS = list(range(WINDOW, N + 1))
 
@@ -62,13 +62,33 @@ def neighbours(i: int) -> list[int]:
     return [j for j in range(i - 1, max(-1, i - 1 - WINDOW), -1) if j >= 0]
 
 
-def smooth_activation(t: float) -> float:
-    if t <= ATTACK_START:
-        return 0.0
-    if t >= ATTACK_START + ATTACK_RISE:
-        return 1.0
-    u = (t - ATTACK_START) / ATTACK_RISE
-    return float(u * u * (3.0 - 2.0 * u))
+def coherent_state_attack(t: float) -> np.ndarray:
+    """Kinematically consistent [position, velocity, acceleration] attack.
+
+    The false velocity is introduced with a quintic smoothstep.  Integrating
+    that velocity gives the false position, and differentiating it gives the
+    false acceleration.  Hence all three packet components start continuously
+    from zero and remain mutually consistent.
+    """
+    elapsed = t - ATTACK_START
+    if elapsed <= 0.0:
+        return np.zeros(3)
+    if elapsed >= ATTACK_RISE:
+        return np.array([
+            ATTACK_DRIFT_RATE * (elapsed - 0.5 * ATTACK_RISE),
+            ATTACK_DRIFT_RATE,
+            0.0,
+        ])
+
+    u = elapsed / ATTACK_RISE
+    smoothstep = 6.0 * u**5 - 15.0 * u**4 + 10.0 * u**3
+    smoothstep_dot = 30.0 * u**2 * (u - 1.0) ** 2 / ATTACK_RISE
+    smoothstep_integral = ATTACK_RISE * (u**6 - 3.0 * u**5 + 2.5 * u**4)
+    return np.array([
+        ATTACK_DRIFT_RATE * smoothstep_integral,
+        ATTACK_DRIFT_RATE * smoothstep,
+        ATTACK_DRIFT_RATE * smoothstep_dot,
+    ])
 
 
 def all_edges() -> list[tuple[int, int]]:
@@ -125,8 +145,10 @@ def leader_command(t: float) -> float:
 
 def attack_signals(t: float, i: int, j: int, attacked: set) -> tuple[np.ndarray, np.ndarray]:
     if (i, j) in attacked:
-        env = smooth_activation(t)
-        return env * X_BIAS, env * Y_BIAS
+        # The MSR baseline has no auxiliary-output channel, so this direct
+        # comparison attacks only the physical-state packet shared by both
+        # methods.
+        return coherent_state_attack(t), np.zeros(3)
     return np.zeros(3), np.zeros(3)
 
 
@@ -219,6 +241,7 @@ def run(method: str, attacked: set) -> dict:
         "tail_err_by_follower": tail_err_by_follower.tolist(),
         "final_max_err": float(np.max(err_norm[-1])),
         "min_gap": float(np.min(gaps)),
+        "final_max_gap": float(np.max(gaps[-1])),
     }
 
 
@@ -235,7 +258,9 @@ SCENARIOS = {
 def main() -> None:
     summary = {"config": {
         "followers": N, "tau": TAU, "headway": H, "window": WINDOW,
-        "F_remove": F_REMOVE, "x_bias": X_BIAS.tolist(), "y_bias": Y_BIAS.tolist(),
+        "F_remove": F_REMOVE, "attack_start": ATTACK_START,
+        "attack_rise": ATTACK_RISE, "attack_drift_rate": ATTACK_DRIFT_RATE,
+        "auxiliary_output_attack": [0.0, 0.0, 0.0],
         "note": "MSR runs on the redundant look-ahead graph it is designed for; "
                 "in-degrees are 1,2,3,3,3,3,3 for followers 1..7.",
     }, "results": {}}
@@ -251,10 +276,16 @@ def main() -> None:
                 "tail_err_by_follower": r["tail_err_by_follower"],
                 "final_max_err": r["final_max_err"],
                 "min_intervehicle_distance": r["min_gap"],
+                "final_max_intervehicle_distance": r["final_max_gap"],
             }
-            verdict = "FAILS" if r["min_gap"] <= 0.0 or r["tail_max_err"] > 1.0 else "ok"
+            if r["min_gap"] <= 0.0:
+                verdict = "collision"
+            elif r["tail_max_err"] > 5.0:
+                verdict = "large deviation"
+            else:
+                verdict = "bounded"
             print(f"  {method:>4}: steady max err={r['tail_max_err']:9.4f}  "
-                  f"min gap={r['min_gap']:8.3f} m  [{verdict}]")
+                  f"final max gap={r['final_max_gap']:8.3f} m  [{verdict}]")
 
     out = ROOT / "comparison" / "results" / "single_channel.json"
     out.parent.mkdir(parents=True, exist_ok=True)

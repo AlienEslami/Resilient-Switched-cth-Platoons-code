@@ -18,12 +18,17 @@ import matplotlib.pyplot as plt
 def main() -> None:
     plt.rcParams.update(
         {
-            "font.size": 7,
-            "axes.labelsize": 7,
-            "legend.fontsize": 6.5,
-            "xtick.labelsize": 6.5,
-            "ytick.labelsize": 6.5,
-            "lines.linewidth": 1.1,
+            "font.family": "serif",
+            "font.serif": ["Times New Roman"],
+            "mathtext.fontset": "stix",
+            "font.size": 9,
+            "axes.labelsize": 9,
+            "legend.fontsize": 8.5,
+            "xtick.labelsize": 8.5,
+            "ytick.labelsize": 8.5,
+            "lines.linewidth": 1.2,
+            "pdf.fonttype": 42,
+            "ps.fonttype": 42,
         }
     )
     attacked = set(all_edges())
@@ -35,10 +40,10 @@ def main() -> None:
     def max_err(r):
         return np.max(r["err_norm"], axis=1)
 
-    def min_gap(r):
-        return np.min(r["gaps"], axis=1)
+    def max_gap(r):
+        return np.max(r["gaps"], axis=1)
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(3.35, 3.6), sharex=True)
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(3.35, 4.0), sharex=True)
 
     ax1.semilogy(msr["times"], np.maximum(max_err(msr), 1e-4), "-", color="C3",
                  label="MSR rejection")
@@ -49,11 +54,11 @@ def main() -> None:
     ax1.legend(loc="center right")
     ax1.grid(True, which="both", alpha=0.3)
 
-    ax2.plot(msr["times"], min_gap(msr), "-", color="C3", label="MSR rejection")
-    ax2.plot(ours["times"], min_gap(ours), "--", color="C0", label="Proposed")
+    ax2.plot(msr["times"], max_gap(msr), "-", color="C3", label="MSR rejection")
+    ax2.plot(ours["times"], max_gap(ours), "--", color="C0", label="Proposed")
     ax2.axhline(equilibrium_gap, ls="-.", color="gray", lw=1, label="equilibrium gap")
     ax2.axvline(ATTACK_START, ls=":", color="gray", lw=1)
-    ax2.set_ylabel("min. spacing (m)")
+    ax2.set_ylabel("max. spacing (m)")
     ax2.set_xlabel("time (s)")
     ax2.set_ylim(bottom=0)
     ax2.grid(True, alpha=0.3)
@@ -67,7 +72,7 @@ def main() -> None:
     separate.mkdir(parents=True, exist_ok=True)
     for axis, suffix in [
         (ax1, "tracking_error"),
-        (ax2, "minimum_spacing"),
+        (ax2, "maximum_spacing"),
     ]:
         original_xlabel = axis.get_xlabel()
         axis.set_xlabel("time (s)")
@@ -95,8 +100,8 @@ def main() -> None:
     # exact scalars for the paper text
     print("\n--- numbers for the text ---")
     print(f"followers N = {N}, equilibrium gap = {equilibrium_gap:.0f} m")
-    print(f"MSR : steady max err = {msr['tail_max_err']:.1f}, min spacing = {msr['min_gap']:.1f} m")
-    print(f"Ours: steady max err = {ours['tail_max_err']:.3f}, min spacing = {ours['min_gap']:.2f} m")
+    print(f"MSR : steady max err = {msr['tail_max_err']:.1f}, final max spacing = {msr['final_max_gap']:.1f} m")
+    print(f"Ours: steady max err = {ours['tail_max_err']:.3f}, final max spacing = {ours['final_max_gap']:.2f} m")
     print("MSR per-follower steady err :", [round(x, 1) for x in msr["tail_err_by_follower"]])
     print("Ours per-follower steady err:", [round(x, 3) for x in ours["tail_err_by_follower"]])
 
